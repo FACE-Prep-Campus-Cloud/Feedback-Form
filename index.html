@@ -53,19 +53,62 @@
   .header { text-align: center; margin-bottom: 56px; animation: fadeUp .7s ease both; }
   @media (max-width: 640px) { .header { margin-bottom: 40px; } }
 
-  .logo-badge {
-    display: inline-flex; align-items: center; gap: 10px;
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 100px; padding: 8px 20px 8px 12px;
-    font-size: 13px; font-weight: 500; color: var(--muted);
-    margin-bottom: 28px; letter-spacing: .03em;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  /* ── LOGO AREA ── */
+  .logo-area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 28px;
   }
-  @media (max-width: 640px) { .logo-badge { font-size: 12px; padding: 6px 16px 6px 10px; } }
-  .logo-badge .dot {
-    width: 8px; height: 8px; border-radius: 50%;
+  .logo-img-wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 10px 24px 10px 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  }
+  .logo-img {
+    height: 40px;
+    width: auto;
+    object-fit: contain;
+    display: block;
+  }
+  @media (max-width: 640px) {
+    .logo-img { height: 32px; }
+    .logo-img-wrap { padding: 8px 18px 8px 12px; gap: 10px; }
+  }
+  .logo-text-block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+  .logo-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: .01em;
+    line-height: 1.2;
+  }
+  @media (max-width: 640px) { .logo-title { font-size: 13px; } }
+  .logo-badge-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--muted);
+    letter-spacing: .04em;
+  }
+  .logo-badge-pill .dot {
+    width: 7px; height: 7px; border-radius: 50%;
     background: var(--success); box-shadow: 0 0 8px rgba(16,185,129,0.4);
     animation: pulse 2s infinite;
+    flex-shrink: 0;
   }
   @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:.4; } }
 
@@ -343,10 +386,25 @@
 <div class="wrap">
 
   <div class="header">
-    <div class="logo-badge">
-      <div class="dot"></div>
-      Monthly Feedback — FACE Prep Campus
+    <!-- ── FACE PREP LOGO ── -->
+    <div class="logo-area">
+      <div class="logo-img-wrap">
+        <img
+          src="face prep campus.webp"
+          alt="FACE Prep Campus Logo"
+          class="logo-img"
+          onerror="this.style.display='none'"
+        >
+        <div class="logo-text-block">
+          <span class="logo-title">FACE Prep Campus</span>
+          <span class="logo-badge-pill">
+            <span class="dot"></span>
+            Monthly Feedback
+          </span>
+        </div>
+      </div>
     </div>
+
     <h1>Share Your Campus Experience</h1>
     <p class="subtitle">Your responses are confidential and will be used solely to enhance training quality, support, and campus experience.</p>
   </div>
@@ -1496,11 +1554,6 @@
   }
 
   // ── Submit ──
-  // What gets sent to Google Sheets per subject:
-  //   subject{N}_Name        → subject name
-  //   subject{N}_Mentor      → mentor name
-  //   subject{N}_Rating      → average of 5 rubric scores (2 decimal places) — HIGHLIGHTED IN GREEN
-
   document.getElementById('feedbackForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     const btn = document.getElementById('submitBtn');
@@ -1509,7 +1562,6 @@
 
     const fd = new FormData(this);
 
-    // ── Base fields ──
     const data = {
       timestamp:              new Date().toISOString(),
       studentName:            fd.get('studentName'),
@@ -1530,7 +1582,6 @@
       suggestions:            fd.get('suggestions'),
     };
 
-    // ── Per-subject: name, mentor, average rating only ──
     const college    = fd.get('collegeName');
     const department = fd.get('department');
 
@@ -1547,11 +1598,9 @@
           mentorName  = subjectData.mentor;
         }
 
-        // Subject name & mentor
         data[`subject${n}_Name`]   = subjectName;
         data[`subject${n}_Mentor`] = mentorName;
 
-        // Calculate average of 5 rubric scores
         const scores = [];
         MENTOR_RUBRICS.forEach((rub) => {
           const safeKey = rub.replace(/\s+/g,'').replace(/[^a-zA-Z]/g,'');
@@ -1560,7 +1609,6 @@
           scores.push(score);
         });
 
-        // Average of answered rubrics only
         const answered = scores.filter(s => s > 0);
         data[`subject${n}_Rating`] = answered.length
           ? (answered.reduce((a, b) => a + b, 0) / answered.length).toFixed(2)
@@ -1568,7 +1616,6 @@
       });
     }
 
-    // ── Demo mode ──
     if (SHEET_SCRIPT_URL === "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE") {
       console.log("Form Data (demo — columns that will be sent to Sheets):");
       console.table(data);
@@ -1578,7 +1625,6 @@
       return;
     }
 
-    // ── Live submit ──
     try {
       await fetch(SHEET_SCRIPT_URL, {
         method: 'POST',
