@@ -202,6 +202,36 @@
   input::placeholder, textarea::placeholder { color: #94a3b8; }
   textarea { min-height: 100px; resize: vertical; }
 
+  /* ── ERROR STATES ── */
+  .field.error input[type="text"],
+  .field.error input[type="email"],
+  .field.error textarea,
+  .field.error select {
+    border-color: var(--error);
+    box-shadow: 0 0 0 3px rgba(239,68,68,.1);
+  }
+  .field.error label {
+    color: var(--error);
+  }
+  .error-message {
+    display: none;
+    font-size: 12px;
+    color: var(--error);
+    margin-top: 6px;
+    font-weight: 500;
+  }
+  .field.error .error-message {
+    display: block;
+  }
+  .radio-group.error label,
+  .scale-row.error label,
+  .nps-row.error label {
+    border-color: var(--error);
+  }
+  .checkbox-grid.error label {
+    border-color: var(--error);
+  }
+
   .select-wrapper { position: relative; }
   .select-wrapper::after {
     content: ''; position: absolute; right: 16px; top: 50%;
@@ -373,7 +403,14 @@
   @media (max-width: 640px) { .divider { margin: 20px 0; } }
   .section-subtitle { font-size: 12px; color: var(--muted); margin-bottom: 20px; margin-top: -14px; }
 
-  
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
+    20%, 40%, 60%, 80% { transform: translateX(4px); }
+  }
+  .shake {
+    animation: shake 0.5s;
+  }
 </style>
 </head>
 <body>
@@ -424,15 +461,18 @@
         <div class="field">
           <label for="studentName">Student Name <span class="req">*</span></label>
           <input type="text" id="studentName" name="studentName" placeholder="Enter your full name" required>
+          <div class="error-message">Please enter your name</div>
         </div>
         <div class="field">
           <label for="regNumber">Register Number <span class="req">*</span></label>
           <input type="text" id="regNumber" name="regNumber" placeholder="e.g. 22CS001" required>
+          <div class="error-message">Please enter your register number</div>
         </div>
       </div>
       <div class="field">
         <label for="studentEmail">Student Email ID <span class="req">*</span></label>
         <input type="email" id="studentEmail" name="studentEmail" placeholder="yourname@college.edu" required>
+        <div class="error-message">Please enter a valid email address</div>
       </div>
       <div class="field">
         <label for="collegeName">College Name <span class="req">*</span></label>
@@ -463,6 +503,7 @@
             <option value="Kristu Jayanti (Deemed to be University)">Kristu Jayanti (Deemed to be University)</option>
           </select>
         </div>
+        <div class="error-message">Please select your college</div>
       </div>
       <div class="field">
         <label for="department">Department <span class="req">*</span></label>
@@ -471,6 +512,7 @@
             <option value="" disabled selected>First select your college</option>
           </select>
         </div>
+        <div class="error-message">Please select your department</div>
       </div>
     </div>
 
@@ -488,6 +530,7 @@
           <input type="radio" id="assessNo" name="assessments" value="No">
           <label for="assessNo">❌ No</label>
         </div>
+        <div class="error-message">Please select an option</div>
       </div>
       <div class="divider"></div>
       <div class="field">
@@ -498,6 +541,7 @@
           <input type="radio" id="matsNo" name="studyMaterials" value="No">
           <label for="matsNo">❌ No</label>
         </div>
+        <div class="error-message">Please select an option</div>
       </div>
       <div class="field" id="noMatsField" style="display:none">
         <label for="missingMats">Which course papers had no study material?</label>
@@ -524,6 +568,7 @@
             <input type="radio" id="curr5" name="curriculumRating" value="5"><label for="curr5">5</label>
           </div>
         </div>
+        <div class="error-message">Please select a rating</div>
       </div>
       <div class="divider"></div>
       <div class="field">
@@ -538,6 +583,7 @@
             <input type="radio" id="conf5" name="confidenceRating" value="5"><label for="conf5">5</label>
           </div>
         </div>
+        <div class="error-message">Please select a rating</div>
       </div>
     </div>
 
@@ -565,10 +611,12 @@
           <input type="radio" id="infra9" name="infraNPS" value="9"><label for="infra9">9</label>
           <input type="radio" id="infra10" name="infraNPS" value="10"><label for="infra10">10</label>
         </div>
+        <div class="error-message">Please select a rating</div>
       </div>
       <div class="field">
         <label for="infraChallenges">Describe infrastructure challenges in detail <span class="req">*</span></label>
         <textarea id="infraChallenges" name="infraChallenges" placeholder="Share specific issues with Wi-Fi, classrooms, labs, etc..." required></textarea>
+        <div class="error-message">Please describe the infrastructure challenges</div>
       </div>
     </div>
 
@@ -593,6 +641,7 @@
           <input type="radio" id="train9" name="trainingNPS" value="9"><label for="train9">9</label>
           <input type="radio" id="train10" name="trainingNPS" value="10"><label for="train10">10</label>
         </div>
+        <div class="error-message">Please select a rating</div>
       </div>
     </div>
 
@@ -618,14 +667,17 @@
           <input type="checkbox" id="ch6" name="challenges" value="Other">
           <label for="ch6">Other</label>
         </div>
+        <div class="error-message">Please select at least one challenge</div>
       </div>
       <div class="field">
         <label for="challengeDetail">Describe your challenges in detail <span class="req">*</span></label>
         <textarea id="challengeDetail" name="challengeDetail" placeholder="Share as much detail as possible so we can help..." required></textarea>
+        <div class="error-message">Please describe your challenges</div>
       </div>
       <div class="field">
         <label for="suggestions">Your suggestions for improvement <span class="req">*</span></label>
         <textarea id="suggestions" name="suggestions" placeholder="What would make your FACE Prep experience better?" required></textarea>
+        <div class="error-message">Please provide your suggestions</div>
       </div>
     </div>
 
@@ -1345,6 +1397,157 @@
     }
   };
 
+  // ── VALIDATION FUNCTIONS ──
+  function clearAllErrors() {
+    document.querySelectorAll('.field.error, .radio-group.error, .scale-row.error, .nps-row.error, .checkbox-grid.error').forEach(el => {
+      el.classList.remove('error');
+    });
+  }
+
+  function validateField(field) {
+    const input = field.querySelector('input:not([type="radio"]):not([type="checkbox"]), textarea, select');
+    
+    if (input) {
+      if (input.type === 'email') {
+        const isValid = input.value.trim() && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value);
+        if (!isValid) {
+          field.classList.add('error');
+          return false;
+        }
+      } else if (input.tagName === 'SELECT') {
+        if (!input.value || input.value === '') {
+          field.classList.add('error');
+          return false;
+        }
+      } else if (input.required && !input.value.trim()) {
+        field.classList.add('error');
+        return false;
+      }
+    }
+    
+    field.classList.remove('error');
+    return true;
+  }
+
+  function validateRadioGroup(field) {
+    const radios = field.querySelectorAll('input[type="radio"]');
+    const radioGroup = field.querySelector('.radio-group, .scale-row, .nps-row');
+    
+    if (radios.length > 0 && radios[0].required) {
+      const isChecked = Array.from(radios).some(r => r.checked);
+      if (!isChecked && radioGroup) {
+        radioGroup.classList.add('error');
+        field.classList.add('error');
+        return false;
+      }
+    }
+    
+    if (radioGroup) radioGroup.classList.remove('error');
+    field.classList.remove('error');
+    return true;
+  }
+
+  function validateCheckboxGroup(field) {
+    const checkboxes = field.querySelectorAll('input[type="checkbox"]');
+    const checkboxGrid = field.querySelector('.checkbox-grid');
+    
+    if (checkboxes.length > 0) {
+      const isChecked = Array.from(checkboxes).some(cb => cb.checked);
+      if (!isChecked && checkboxGrid) {
+        checkboxGrid.classList.add('error');
+        field.classList.add('error');
+        return false;
+      }
+    }
+    
+    if (checkboxGrid) checkboxGrid.classList.remove('error');
+    field.classList.remove('error');
+    return true;
+  }
+
+  function validateForm() {
+    clearAllErrors();
+    
+    const allFields = document.querySelectorAll('.field');
+    let firstError = null;
+    let isValid = true;
+
+    allFields.forEach(field => {
+      const hasRadio = field.querySelector('input[type="radio"]');
+      const hasCheckbox = field.querySelector('input[type="checkbox"]');
+      
+      let fieldValid = true;
+      
+      if (hasCheckbox) {
+        fieldValid = validateCheckboxGroup(field);
+      } else if (hasRadio) {
+        fieldValid = validateRadioGroup(field);
+      } else {
+        fieldValid = validateField(field);
+      }
+      
+      if (!fieldValid) {
+        isValid = false;
+        if (!firstError) {
+          firstError = field;
+        }
+      }
+    });
+
+    if (!isValid && firstError) {
+      firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      
+      const section = firstError.closest('.section');
+      if (section) {
+        section.classList.add('shake');
+        setTimeout(() => section.classList.remove('shake'), 500);
+      }
+      
+      showToast('Please fill in all required fields', 'error');
+    }
+
+    return isValid;
+  }
+
+  // Add real-time validation on blur
+  document.addEventListener('blur', (e) => {
+    const field = e.target.closest('.field');
+    if (field) {
+      const hasRadio = field.querySelector('input[type="radio"]');
+      const hasCheckbox = field.querySelector('input[type="checkbox"]');
+      
+      if (hasCheckbox) {
+        validateCheckboxGroup(field);
+      } else if (hasRadio) {
+        validateRadioGroup(field);
+      } else {
+        validateField(field);
+      }
+    }
+  }, true);
+
+  // Clear error on input
+  document.addEventListener('input', (e) => {
+    const field = e.target.closest('.field');
+    if (field && field.classList.contains('error')) {
+      validateField(field);
+    }
+  });
+
+  // Clear error on change for radio/checkbox
+  document.addEventListener('change', (e) => {
+    const field = e.target.closest('.field');
+    if (field && field.classList.contains('error')) {
+      if (e.target.type === 'radio') {
+        validateRadioGroup(field);
+      } else if (e.target.type === 'checkbox') {
+        validateCheckboxGroup(field);
+      } else {
+        validateField(field);
+      }
+    }
+  });
+
   // ── College → Department change ──
   document.getElementById('collegeName').addEventListener('change', function() {
     const college = this.value;
@@ -1423,7 +1626,8 @@
       }
       html += `</tr>`;
     });
-    html += `</tbody></table></div>`;
+    html += `</tbody></table></div>
+    <div class="error-message">Please rate all criteria for this mentor</div>`;
     return html;
   }
 
@@ -1448,6 +1652,7 @@
             ${optionsHtml}
           </select>
         </div>
+        <div class="error-message">Please select an elective</div>
       </div>
 
       <div id="electiveDetail${index}" style="display:none;">
@@ -1476,7 +1681,9 @@
       html += `</tr>`;
     });
 
-    html += `</tbody></table></div></div>`;
+    html += `</tbody></table></div>
+    <div class="error-message">Please rate all criteria for this mentor</div>
+    </div>`;
     return html;
   }
 
@@ -1544,6 +1751,12 @@
   // ── Submit ──
   document.getElementById('feedbackForm').addEventListener('submit', async function(e) {
     e.preventDefault();
+    
+    // Validate before submission
+    if (!validateForm()) {
+      return;
+    }
+    
     const btn = document.getElementById('submitBtn');
     btn.disabled = true;
     btn.innerHTML = '<span>Submitting…</span><span>⏳</span>';
@@ -1625,6 +1838,7 @@
       document.getElementById('department').disabled = true;
       document.getElementById('department').innerHTML = '<option value="" disabled selected>First select your college</option>';
       document.getElementById('mentorSections').innerHTML = '';
+      clearAllErrors();
       updateProgress();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (err) {
