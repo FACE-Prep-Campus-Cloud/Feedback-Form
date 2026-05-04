@@ -101,6 +101,8 @@
   }
   .icon-blue  { background: rgba(59,130,246,.1); color: var(--accent); }
   .icon-purple{ background: rgba(139,92,246,.1); color: var(--accent2); }
+  .icon-green { background: rgba(16,185,129,.1); color: var(--success); }
+  .icon-orange{ background: rgba(249,115,22,.1); color: #f97316; }
 
   /* ── FIELDS ── */
   .field { margin-bottom: 18px; }
@@ -108,7 +110,7 @@
   label { display: block; font-size: 12px; font-weight: 500; color: var(--muted); margin-bottom: 7px; letter-spacing: .04em; text-transform: uppercase; }
   label .req { color: var(--accent); margin-left: 2px; }
 
-  input[type="text"], input[type="email"], select {
+  input[type="text"], input[type="email"], select, textarea {
     width: 100%; background: var(--surface); border: 1px solid var(--border);
     border-radius: 10px; color: var(--text);
     font-family: 'DM Sans', sans-serif; font-size: 15px;
@@ -116,11 +118,12 @@
     transition: border-color .2s, box-shadow .2s;
     appearance: none; -webkit-appearance: none;
   }
-  @media (max-width: 640px) { input[type="text"], input[type="email"], select { font-size: 16px; } }
-  input:focus, select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59,130,246,.1); }
-  input::placeholder { color: #94a3b8; }
+  textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+  @media (max-width: 640px) { input[type="text"], input[type="email"], select, textarea { font-size: 16px; } }
+  input:focus, select:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59,130,246,.1); }
+  input::placeholder, textarea::placeholder { color: #94a3b8; }
 
-  .field.error input, .field.error select { border-color: var(--error); box-shadow: 0 0 0 3px rgba(239,68,68,.1); }
+  .field.error input, .field.error select, .field.error textarea { border-color: var(--error); box-shadow: 0 0 0 3px rgba(239,68,68,.1); }
   .field.error > label { color: var(--error); }
   .error-message { display: none; font-size: 11px; color: var(--error); margin-top: 5px; font-weight: 500; }
   .field.error .error-message { display: block; }
@@ -175,7 +178,7 @@
   .yn-btns input[type="radio"]:checked + label.no-lbl  { background: rgba(239,68,68,.12); border-color: var(--error); color: var(--error); }
   .yn-btns label:hover { border-color: var(--accent); color: var(--text); }
 
-  /* ── OVERALL RATING SCALE ── */
+  /* ── OVERALL RATING SCALE (1–5) ── */
   .rating-block {
     background: rgba(59,130,246,.04);
     border: 1px solid rgba(59,130,246,.15);
@@ -186,19 +189,14 @@
     font-size: 12px; font-weight: 700; color: var(--text);
     letter-spacing: .01em; text-transform: uppercase;
   }
-
-  /* Scale container — needs enough height for the lifted selected circle */
   .scale-btns {
     display: flex; gap: 14px; flex-wrap: wrap;
     align-items: flex-end; padding-bottom: 4px;
   }
   .scale-btns input[type="radio"] { display: none; }
-
   .scale-circle-wrap {
     display: flex; flex-direction: column; align-items: center; gap: 6px;
   }
-
-  /* The circle label */
   .scale-btns label {
     width: 44px; height: 44px;
     display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px;
@@ -216,8 +214,6 @@
     color: #fff; line-height: 1; white-space: nowrap;
     overflow: hidden; transition: font-size 0.18s ease;
   }
-
-  /* Per-circle colours */
   .scale-btns label[data-v="1"] { background: #e53935; }
   .scale-btns label[data-v="2"] { background: #f57c00; }
   .scale-btns label[data-v="3"] { background: #fdd835; }
@@ -225,28 +221,20 @@
   .scale-btns label[data-v="3"] .s-word { color: #555; }
   .scale-btns label[data-v="4"] { background: #43a047; }
   .scale-btns label[data-v="5"] { background: #2e7d32; }
-
-  /* Bottom word label */
   .s-circle-label {
     font-size: 10px; font-weight: 500; color: var(--muted);
     text-align: center; line-height: 1.2;
     transition: opacity 0.2s, font-weight 0.2s, color 0.2s;
     white-space: nowrap;
   }
-
-  /* ── NO SELECTION: hover shrinks slightly ── */
   .scale-btns:not(.has-selection) label:hover {
     opacity: 0.78; transform: scale(0.92) translateY(-3px);
   }
-
-  /* ── AFTER SELECTION: shrink & fade all ── */
   .scale-btns.has-selection label {
     width: 30px; height: 30px; opacity: 0.32;
   }
   .scale-btns.has-selection label .s-num { font-size: 12px; }
   .scale-btns.has-selection .s-circle-label { opacity: 0.28; }
-
-  /* ── SELECTED circle: grow big, lift, show word ── */
   .scale-btns.has-selection input[type="radio"]:checked + label {
     width: 70px; height: 70px; opacity: 1;
     border-color: rgba(255,255,255,0.88);
@@ -255,14 +243,9 @@
   }
   .scale-btns.has-selection input[type="radio"]:checked + label .s-num { font-size: 24px; }
   .scale-btns.has-selection input[type="radio"]:checked + label .s-word { font-size: 10px; }
-
-  /* selected word label below circle */
   .scale-btns.has-selection input[type="radio"]:checked ~ .s-circle-label {
-    opacity: 1 !important;
-    font-weight: 600;
-    color: var(--text);
+    opacity: 1 !important; font-weight: 600; color: var(--text);
   }
-
   .rating-block.error-rating { border-color: var(--error); background: rgba(239,68,68,.04); }
 
   @media (max-width: 640px) {
@@ -275,6 +258,61 @@
     .scale-btns.has-selection input[type="radio"]:checked + label .s-num { font-size: 20px; }
     .scale-btns.has-selection input[type="radio"]:checked + label .s-word { font-size: 9px; }
   }
+
+  /* ── NPS 1–10 SCALE ── */
+  .nps-block {
+    background: rgba(139,92,246,.04);
+    border: 1px solid rgba(139,92,246,.15);
+    border-radius: 10px; padding: 18px 20px; margin-bottom: 16px;
+  }
+  .nps-block-title { font-size: 12px; font-weight: 700; color: var(--text); letter-spacing: .01em; text-transform: uppercase; margin-bottom: 18px; }
+  .nps-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+  .nps-btns input[type="radio"] { display: none; }
+  .nps-btns label {
+    width: 44px; height: 44px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700;
+    cursor: pointer; transition: all .18s; margin: 0; text-transform: none; letter-spacing: 0;
+    border: 2px solid var(--border); background: var(--surface2); color: var(--muted);
+  }
+  .nps-btns input[type="radio"]:checked + label {
+    border-color: var(--accent2); background: var(--accent2); color: #fff;
+    box-shadow: 0 4px 14px rgba(139,92,246,.3); transform: translateY(-3px);
+  }
+  .nps-btns label:hover { border-color: var(--accent2); color: var(--accent2); }
+  .nps-labels { display: flex; justify-content: space-between; margin-top: 10px; font-size: 11px; color: var(--muted); font-weight: 500; }
+  .nps-block.error-nps { border-color: var(--error); background: rgba(239,68,68,.04); }
+
+  /* ── CHECKBOX (multi-select challenges) ── */
+  .check-list { display: flex; flex-direction: column; gap: 10px; }
+  .check-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 16px; border-radius: 10px;
+    background: var(--surface2); border: 1px solid var(--border);
+    cursor: pointer; transition: border-color .15s, background .15s;
+  }
+  .check-item:hover { border-color: var(--accent); background: rgba(59,130,246,.04); }
+  .check-item input[type="checkbox"] { display: none; }
+  .check-box {
+    width: 20px; height: 20px; border-radius: 6px;
+    border: 2px solid var(--border); background: var(--surface);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; transition: all .15s;
+  }
+  .check-item input[type="checkbox"]:checked ~ .check-box,
+  .check-item.checked .check-box {
+    background: var(--accent); border-color: var(--accent);
+  }
+  .check-tick { display: none; color: #fff; font-size: 12px; font-weight: 700; }
+  .check-item input[type="checkbox"]:checked ~ .check-box .check-tick,
+  .check-item.checked .check-box .check-tick { display: block; }
+  .check-label { font-size: 13px; color: var(--text); font-weight: 500; }
+  .check-list.error-check .check-item { border-color: var(--error); }
+  .check-list.error-check { outline: none; }
+
+  /* ── CONDITIONAL TEXT REVEAL ── */
+  .conditional-field { display: none; margin-top: 12px; }
+  .conditional-field.visible { display: block; }
 
   /* ── ELECTIVE ── */
   .elective-select-wrap { margin-bottom: 16px; }
@@ -315,6 +353,16 @@
   #toast.success { border-color: rgba(16,185,129,.3); background: rgba(16,185,129,.05); }
   #toast.error { border-color: rgba(239,68,68,.3); background: rgba(239,68,68,.05); }
 
+  /* Section divider label */
+  .form-section-label {
+    font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 700;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
+    margin: 32px 0 12px; display: flex; align-items: center; gap: 10px;
+  }
+  .form-section-label::before, .form-section-label::after {
+    content: ''; flex: 1; height: 1px; background: var(--border);
+  }
+
   @keyframes shake { 0%,100%{transform:translateX(0);} 10%,30%,50%,70%,90%{transform:translateX(-4px);} 20%,40%,60%,80%{transform:translateX(4px);} }
   .shake { animation: shake 0.5s; }
 </style>
@@ -341,7 +389,10 @@
 
   <form id="feedbackForm" novalidate>
 
-    <!-- PERSONAL INFORMATION -->
+    <!-- ══════════════════════════════════════
+         SECTION 1: PERSONAL INFORMATION
+    ══════════════════════════════════════ -->
+    <div class="form-section-label">Personal Information</div>
     <div class="section">
       <div class="section-title"><div class="icon icon-blue">👤</div>Personal Information</div>
       <div class="field-row">
@@ -403,8 +454,272 @@
       </div>
     </div>
 
-    <!-- FACULTY SECTIONS (dynamically populated) -->
+    <!-- ══════════════════════════════════════
+         ALL SECTIONS BELOW: hidden until college + department selected
+    ══════════════════════════════════════ -->
+    <div id="dynamicContent" style="display:none;">
+
+    <!-- ══════════════════════════════════════
+         SECTION 2: ACADEMIC & PROGRAM EFFECTIVENESS
+    ══════════════════════════════════════ -->
+    <div class="form-section-label">Academic &amp; Program Effectiveness</div>
+    <div class="section">
+      <div class="section-title"><div class="icon icon-green">📚</div>Academic &amp; Program Effectiveness</div>
+
+      <!-- Q1: Regular assessments -->
+      <div class="yn-list" style="margin-bottom:18px;">
+        <div class="yn-row" id="ape_q1_row">
+          <span class="yn-qnum">Q1</span>
+          <span class="yn-text">Did you have regular assessments and assignments as part of your academic curriculum?</span>
+          <div class="yn-btns">
+            <input type="radio" id="ape_q1_y" name="ape_q1" value="Yes" required>
+            <label for="ape_q1_y" class="yes-lbl">Yes</label>
+            <input type="radio" id="ape_q1_n" name="ape_q1" value="No">
+            <label for="ape_q1_n" class="no-lbl">No</label>
+          </div>
+        </div>
+
+        <!-- Q2: Study materials -->
+        <div class="yn-row" id="ape_q2_row">
+          <span class="yn-qnum">Q2</span>
+          <span class="yn-text">Did you receive study materials for all the course papers?</span>
+          <div class="yn-btns">
+            <input type="radio" id="ape_q2_y" name="ape_q2" value="Yes" required>
+            <label for="ape_q2_y" class="yes-lbl">Yes</label>
+            <input type="radio" id="ape_q2_n" name="ape_q2" value="No">
+            <label for="ape_q2_n" class="no-lbl">No</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Conditional: If Q2 is No -->
+      <div class="conditional-field" id="ape_q2_detail_wrap">
+        <div class="field">
+          <label for="ape_q2_detail">Please mention the course papers you didn't receive study materials for <span class="req">*</span></label>
+          <textarea id="ape_q2_detail" name="ape_q2_detail" placeholder="List the course papers here…" rows="3"></textarea>
+          <div class="error-message">Please mention the course papers</div>
+        </div>
+      </div>
+
+      <!-- Q3: Hands-on learning rating -->
+      <div class="rating-block" id="ape_q3_block">
+        <div class="rating-block-title">Q3 — How effective and industry-relevant are the program's hands-on learning and curriculum?</div>
+        <div class="scale-btns" id="apeScaleBtns3">
+          <div class="scale-circle-wrap">
+            <input type="radio" id="ape3v1" name="ape_q3_rating" value="1" required>
+            <label for="ape3v1" data-v="1"><span class="s-num">1</span><span class="s-word">Poor</span></label>
+            <div class="s-circle-label">Poor</div>
+          </div>
+          <div class="scale-circle-wrap">
+            <input type="radio" id="ape3v2" name="ape_q3_rating" value="2">
+            <label for="ape3v2" data-v="2"><span class="s-num">2</span><span class="s-word">Below Avg</span></label>
+            <div class="s-circle-label">Below Avg</div>
+          </div>
+          <div class="scale-circle-wrap">
+            <input type="radio" id="ape3v3" name="ape_q3_rating" value="3">
+            <label for="ape3v3" data-v="3"><span class="s-num">3</span><span class="s-word">Average</span></label>
+            <div class="s-circle-label">Average</div>
+          </div>
+          <div class="scale-circle-wrap">
+            <input type="radio" id="ape3v4" name="ape_q3_rating" value="4">
+            <label for="ape3v4" data-v="4"><span class="s-num">4</span><span class="s-word">Good</span></label>
+            <div class="s-circle-label">Good</div>
+          </div>
+          <div class="scale-circle-wrap">
+            <input type="radio" id="ape3v5" name="ape_q3_rating" value="5">
+            <label for="ape3v5" data-v="5"><span class="s-num">5</span><span class="s-word">Excellent</span></label>
+            <div class="s-circle-label">Excellent</div>
+          </div>
+        </div>
+        <div class="error-message" style="margin-top:4px;">Please select a rating</div>
+      </div>
+
+      <!-- Q4: Confidence & industry preparation rating -->
+      <div class="rating-block" id="ape_q4_block">
+        <div class="rating-block-title">Q4 — How effectively has the program improved your confidence and prepared you for industry expectations and future job roles?</div>
+        <div class="scale-btns" id="apeScaleBtns4">
+          <div class="scale-circle-wrap">
+            <input type="radio" id="ape4v1" name="ape_q4_rating" value="1" required>
+            <label for="ape4v1" data-v="1"><span class="s-num">1</span><span class="s-word">Poor</span></label>
+            <div class="s-circle-label">Poor</div>
+          </div>
+          <div class="scale-circle-wrap">
+            <input type="radio" id="ape4v2" name="ape_q4_rating" value="2">
+            <label for="ape4v2" data-v="2"><span class="s-num">2</span><span class="s-word">Below Avg</span></label>
+            <div class="s-circle-label">Below Avg</div>
+          </div>
+          <div class="scale-circle-wrap">
+            <input type="radio" id="ape4v3" name="ape_q4_rating" value="3">
+            <label for="ape4v3" data-v="3"><span class="s-num">3</span><span class="s-word">Average</span></label>
+            <div class="s-circle-label">Average</div>
+          </div>
+          <div class="scale-circle-wrap">
+            <input type="radio" id="ape4v4" name="ape_q4_rating" value="4">
+            <label for="ape4v4" data-v="4"><span class="s-num">4</span><span class="s-word">Good</span></label>
+            <div class="s-circle-label">Good</div>
+          </div>
+          <div class="scale-circle-wrap">
+            <input type="radio" id="ape4v5" name="ape_q4_rating" value="5">
+            <label for="ape4v5" data-v="5"><span class="s-num">5</span><span class="s-word">Excellent</span></label>
+            <div class="s-circle-label">Excellent</div>
+          </div>
+        </div>
+        <div class="error-message" style="margin-top:4px;">Please select a rating</div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         SECTION 3: MENTOR PERFORMANCE (dynamic)
+    ══════════════════════════════════════ -->
+    <div class="form-section-label">Mentor Performance Rating</div>
     <div id="facultySections"></div>
+
+    <!-- ══════════════════════════════════════
+         SECTION 4: CHALLENGES FACED
+    ══════════════════════════════════════ -->
+    <div class="form-section-label">Challenges Faced</div>
+    <div class="section">
+      <div class="section-title"><div class="icon icon-orange">⚠️</div>Challenges Faced by Students</div>
+
+      <div class="field" style="margin-bottom:20px;">
+        <label>Q1. What challenges are you currently facing? <span class="req">*</span> <span style="text-transform:none;letter-spacing:0;font-weight:400;font-size:11px;">(Select all that apply)</span></label>
+        <div class="check-list" id="challengeList">
+          <label class="check-item" onclick="toggleCheck(this,'challenge_infra')">
+            <input type="checkbox" id="challenge_infra" name="challenge_infra" value="Infrastructure & Facilities">
+            <span class="check-box"><span class="check-tick">✓</span></span>
+            <span class="check-label">Infrastructure &amp; Facilities</span>
+          </label>
+          <label class="check-item" onclick="toggleCheck(this,'challenge_teaching')">
+            <input type="checkbox" id="challenge_teaching" name="challenge_teaching" value="Teaching Quality & Delivery">
+            <span class="check-box"><span class="check-tick">✓</span></span>
+            <span class="check-label">Teaching Quality &amp; Delivery</span>
+          </label>
+          <label class="check-item" onclick="toggleCheck(this,'challenge_comm')">
+            <input type="checkbox" id="challenge_comm" name="challenge_comm" value="Communication & Language Issues">
+            <span class="check-box"><span class="check-tick">✓</span></span>
+            <span class="check-label">Communication &amp; Language Issues</span>
+          </label>
+          <label class="check-item" onclick="toggleCheck(this,'challenge_curriculum')">
+            <input type="checkbox" id="challenge_curriculum" name="challenge_curriculum" value="Curriculum & Academic Concerns">
+            <span class="check-box"><span class="check-tick">✓</span></span>
+            <span class="check-label">Curriculum &amp; Academic Concerns</span>
+          </label>
+          <label class="check-item" onclick="toggleCheck(this,'challenge_materials')">
+            <input type="checkbox" id="challenge_materials" name="challenge_materials" value="Study Materials & Resources">
+            <span class="check-box"><span class="check-tick">✓</span></span>
+            <span class="check-label">Study Materials &amp; Resources</span>
+          </label>
+          <label class="check-item" onclick="toggleCheck(this,'challenge_none','exclusive')">
+            <input type="checkbox" id="challenge_none" name="challenge_none" value="No Challenges">
+            <span class="check-box"><span class="check-tick">✓</span></span>
+            <span class="check-label">No Challenges</span>
+          </label>
+          <label class="check-item" onclick="toggleCheck(this,'challenge_others')">
+            <input type="checkbox" id="challenge_others" name="challenge_others" value="Others">
+            <span class="check-box"><span class="check-tick">✓</span></span>
+            <span class="check-label">Others</span>
+          </label>
+        </div>
+        <div class="error-message" id="challengeErr" style="display:none;margin-top:6px;">Please select at least one option</div>
+      </div>
+
+      <div class="field">
+        <label for="challengeDetail">Q2. Please describe the challenges you are facing in detail <span class="req">*</span></label>
+        <textarea id="challengeDetail" name="challengeDetail" placeholder="Describe your challenges…" required></textarea>
+        <div class="error-message">Please describe your challenges</div>
+      </div>
+
+      <div class="field" style="margin-bottom:0;">
+        <label for="challengeSuggestions">Q3. Please share your suggestions where we can improve <span class="req">*</span></label>
+        <textarea id="challengeSuggestions" name="challengeSuggestions" placeholder="Your suggestions…" required></textarea>
+        <div class="error-message">Please share your suggestions</div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         SECTION 5: NET PROMOTER SCORE (NPS)
+    ══════════════════════════════════════ -->
+    <div class="form-section-label">Net Promoter Score</div>
+    <div class="section">
+      <div class="section-title"><div class="icon icon-purple">⭐</div>Net Promoter Score (NPS)</div>
+
+      <!-- NPS scale 1–10 -->
+      <div class="nps-block" id="npsBlock">
+        <div class="nps-block-title">Q1 — Based on the overall FACE Prep program experience, how likely are you to recommend FACE Prep to your friends or juniors? <span style="font-weight:400;font-size:11px;">(1 = Lowest, 10 = Highest)</span></div>
+        <div class="nps-btns" id="npsBtns">
+          <input type="radio" id="nps1" name="nps_score" value="1" required><label for="nps1">1</label>
+          <input type="radio" id="nps2" name="nps_score" value="2"><label for="nps2">2</label>
+          <input type="radio" id="nps3" name="nps_score" value="3"><label for="nps3">3</label>
+          <input type="radio" id="nps4" name="nps_score" value="4"><label for="nps4">4</label>
+          <input type="radio" id="nps5" name="nps_score" value="5"><label for="nps5">5</label>
+          <input type="radio" id="nps6" name="nps_score" value="6"><label for="nps6">6</label>
+          <input type="radio" id="nps7" name="nps_score" value="7"><label for="nps7">7</label>
+          <input type="radio" id="nps8" name="nps_score" value="8"><label for="nps8">8</label>
+          <input type="radio" id="nps9" name="nps_score" value="9"><label for="nps9">9</label>
+          <input type="radio" id="nps10" name="nps_score" value="10"><label for="nps10">10</label>
+        </div>
+        <div class="nps-labels"><span>Not likely</span><span>Extremely likely</span></div>
+        <div class="error-message" style="margin-top:8px;">Please select a score</div>
+      </div>
+
+      <!-- NPS follow-up Yes/No -->
+      <div class="yn-list" style="margin-bottom:20px;">
+        <div class="yn-row" id="nps_fu1_row">
+          <span class="yn-qnum">Q1</span>
+          <span class="yn-text">Are you satisfied with the overall campus experience (Classroom, Campus Infrastructure, Network / Wi-Fi)?</span>
+          <div class="yn-btns">
+            <input type="radio" id="nps_fu1_y" name="nps_fu1" value="Yes" required>
+            <label for="nps_fu1_y" class="yes-lbl">Yes</label>
+            <input type="radio" id="nps_fu1_n" name="nps_fu1" value="No">
+            <label for="nps_fu1_n" class="no-lbl">No</label>
+          </div>
+        </div>
+        <div class="yn-row" id="nps_fu2_row">
+          <span class="yn-qnum">Q2</span>
+          <span class="yn-text">Are you satisfied with the classroom engagement and experience (Quality of Faculty, Relevance of content delivered)?</span>
+          <div class="yn-btns">
+            <input type="radio" id="nps_fu2_y" name="nps_fu2" value="Yes" required>
+            <label for="nps_fu2_y" class="yes-lbl">Yes</label>
+            <input type="radio" id="nps_fu2_n" name="nps_fu2" value="No">
+            <label for="nps_fu2_n" class="no-lbl">No</label>
+          </div>
+        </div>
+        <div class="yn-row" id="nps_fu3_row">
+          <span class="yn-qnum">Q3</span>
+          <span class="yn-text">Are you happy with the Skill Development progress?</span>
+          <div class="yn-btns">
+            <input type="radio" id="nps_fu3_y" name="nps_fu3" value="Yes" required>
+            <label for="nps_fu3_y" class="yes-lbl">Yes</label>
+            <input type="radio" id="nps_fu3_n" name="nps_fu3" value="No">
+            <label for="nps_fu3_n" class="no-lbl">No</label>
+          </div>
+        </div>
+        <div class="yn-row" id="nps_fu4_row">
+          <span class="yn-qnum">Q4</span>
+          <span class="yn-text">Are you happy with Placement opportunities?</span>
+          <div class="yn-btns">
+            <input type="radio" id="nps_fu4_y" name="nps_fu4" value="Yes" required>
+            <label for="nps_fu4_y" class="yes-lbl">Yes</label>
+            <input type="radio" id="nps_fu4_n" name="nps_fu4" value="No">
+            <label for="nps_fu4_n" class="no-lbl">No</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="npsLike">Q5. In summary, what do you like about the FACE Prep program? <span class="req">*</span></label>
+        <textarea id="npsLike" name="npsLike" placeholder="Share what you love about the program…" required></textarea>
+        <div class="error-message">Please share what you like about the program</div>
+      </div>
+
+      <div class="field" style="margin-bottom:0;">
+        <label for="npsImprove">Q6. What is one thing you would like FACE Prep to improve in next year? <span class="req">*</span></label>
+        <textarea id="npsImprove" name="npsImprove" placeholder="Your improvement suggestion…" required></textarea>
+        <div class="error-message">Please share your improvement suggestion</div>
+      </div>
+    </div>
+
+    </div><!-- /dynamicContent -->
 
     <div class="submit-area">
       <button type="submit" class="btn-submit" id="submitBtn">
@@ -853,6 +1168,7 @@ document.getElementById('collegeName').addEventListener('change', function() {
   const deptSel = document.getElementById('department');
   deptSel.innerHTML = '<option value="" disabled selected>Select your department</option>';
   document.getElementById('facultySections').innerHTML = '';
+  document.getElementById('dynamicContent').style.display = 'none';
   if (COLLEGE_DATA[college]) {
     deptSel.disabled = false;
     Object.keys(COLLEGE_DATA[college]).forEach(d => {
@@ -881,6 +1197,7 @@ document.getElementById('department').addEventListener('change', function() {
     sec.innerHTML = sub.isElective ? buildElective(sub, idx) : buildCard(sub, idx);
     container.appendChild(sec);
   });
+  document.getElementById('dynamicContent').style.display = 'block';
   updateProgress();
 });
 
@@ -899,7 +1216,7 @@ function buildScaleHtml(n) {
     </div>`;
   }
   return `<div class="rating-block" id="ratingBlock${n}">
-    <div class="rating-block-title">Overall Rating</div>
+    <div class="rating-block-title">Overall Rating — Rate your faculty based on your learning experience (5 = Excellent, 1 = Poor)</div>
     <div class="scale-btns" id="scaleBtns${n}">${btns}</div>
     <div class="error-message" style="margin-top:4px;">Please select a rating</div>
   </div>`;
@@ -995,13 +1312,100 @@ function handleElective(sel, n) {
   updateProgress();
 }
 
+// ── Checkbox toggle for challenges ──
+const CHALLENGE_IDS = ['challenge_infra','challenge_teaching','challenge_comm','challenge_curriculum','challenge_materials','challenge_none','challenge_others'];
+
+function toggleCheck(labelEl, id, mode) {
+  const cb = document.getElementById(id);
+  if (mode === 'exclusive') {
+    // "No Challenges" clears everything else
+    const wasChecked = cb.checked;
+    CHALLENGE_IDS.forEach(cid => {
+      const el = document.getElementById(cid);
+      if (el) { el.checked = false; el.closest('.check-item').classList.remove('checked'); }
+    });
+    if (!wasChecked) { cb.checked = true; labelEl.classList.add('checked'); }
+  } else {
+    // Uncheck "No Challenges" if selecting anything else
+    const noneEl = document.getElementById('challenge_none');
+    if (noneEl) { noneEl.checked = false; noneEl.closest('.check-item').classList.remove('checked'); }
+    cb.checked = !cb.checked;
+    if (cb.checked) labelEl.classList.add('checked');
+    else labelEl.classList.remove('checked');
+  }
+  document.getElementById('challengeErr').style.display = 'none';
+  updateProgress();
+}
+
+// ── Q2 No → reveal detail field ──
+document.addEventListener('change', e => {
+  if (e.target.name === 'ape_q2') {
+    const wrap = document.getElementById('ape_q2_detail_wrap');
+    const ta = document.getElementById('ape_q2_detail');
+    if (e.target.value === 'No') {
+      wrap.classList.add('visible');
+      ta.required = true;
+    } else {
+      wrap.classList.remove('visible');
+      ta.required = false;
+      ta.value = '';
+    }
+  }
+
+  // Rating scale — add has-selection class
+  if (e.target.type === 'radio' && e.target.name && e.target.name.endsWith('_rating')) {
+    const scaleBtns = e.target.closest('.scale-btns');
+    if (scaleBtns) scaleBtns.classList.add('has-selection');
+    const rb = e.target.closest('.rating-block');
+    if (rb) rb.classList.remove('error-rating');
+  }
+
+  // APE scale blocks
+  if (e.target.name === 'ape_q3_rating') {
+    document.getElementById('apeScaleBtns3').classList.add('has-selection');
+    document.getElementById('ape_q3_block').classList.remove('error-rating');
+  }
+  if (e.target.name === 'ape_q4_rating') {
+    document.getElementById('apeScaleBtns4').classList.add('has-selection');
+    document.getElementById('ape_q4_block').classList.remove('error-rating');
+  }
+
+  // NPS block
+  if (e.target.name === 'nps_score') {
+    document.getElementById('npsBlock').classList.remove('error-nps');
+  }
+
+  if (e.target.type === 'radio') {
+    const row = e.target.closest('.yn-row');
+    if (row) row.classList.remove('error-row');
+  }
+  const field = e.target.closest('.field');
+  if (field && field.classList.contains('error')) field.classList.remove('error');
+  updateProgress();
+});
+
+document.addEventListener('input', e => {
+  const field = e.target.closest('.field');
+  if (field && field.classList.contains('error')) field.classList.remove('error');
+  updateProgress();
+});
+
 // ── Validation ──
+function atLeastOneChallengeSelected() {
+  return CHALLENGE_IDS.some(id => {
+    const el = document.getElementById(id);
+    return el && el.checked;
+  });
+}
+
 function validateForm() {
   let valid = true, first = null;
 
+  // Standard fields
   document.querySelectorAll('#feedbackForm .field').forEach(field => {
-    const inp = field.querySelector('input:not([type="radio"]):not([type="hidden"]), select');
+    const inp = field.querySelector('input:not([type="radio"]):not([type="hidden"]):not([type="checkbox"]), select, textarea');
     if (!inp) return;
+    if (inp.offsetParent === null) return; // hidden by conditional
     let ok = true;
     if (inp.type === 'email') ok = inp.value.trim() && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inp.value);
     else if (inp.tagName === 'SELECT') ok = !!inp.value;
@@ -1010,6 +1414,48 @@ function validateForm() {
     else field.classList.remove('error');
   });
 
+  // Challenge checkboxes
+  if (!atLeastOneChallengeSelected()) {
+    document.getElementById('challengeErr').style.display = 'block';
+    valid = false;
+    if (!first) first = document.getElementById('challengeList');
+  }
+
+  // APE ratings
+  ['ape_q3_rating','ape_q4_rating'].forEach((name, i) => {
+    const blockId = `ape_q${i+3}_block`;
+    const block = document.getElementById(blockId);
+    if (!document.querySelector(`[name="${name}"]:checked`)) {
+      block.classList.add('error-rating'); valid = false;
+      if (!first) first = block;
+    } else block.classList.remove('error-rating');
+  });
+
+  // APE yes/no
+  ['ape_q1','ape_q2'].forEach((name, qi) => {
+    const row = document.getElementById(`ape_q${qi+1}_row`);
+    if (!document.querySelector(`[name="${name}"]:checked`)) {
+      row.classList.add('error-row'); valid = false;
+      if (!first) first = row;
+    } else row.classList.remove('error-row');
+  });
+
+  // NPS score
+  if (!document.querySelector('[name="nps_score"]:checked')) {
+    document.getElementById('npsBlock').classList.add('error-nps'); valid = false;
+    if (!first) first = document.getElementById('npsBlock');
+  }
+
+  // NPS follow-ups
+  ['nps_fu1','nps_fu2','nps_fu3','nps_fu4'].forEach((name, qi) => {
+    const row = document.getElementById(`nps_fu${qi+1}_row`);
+    if (!document.querySelector(`[name="${name}"]:checked`)) {
+      row.classList.add('error-row'); valid = false;
+      if (!first) first = row;
+    } else row.classList.remove('error-row');
+  });
+
+  // Faculty sections
   const college = document.getElementById('collegeName').value;
   const dept = document.getElementById('department').value;
   if (college && dept && COLLEGE_DATA[college] && COLLEGE_DATA[college][dept]) {
@@ -1042,34 +1488,12 @@ function validateForm() {
   return valid;
 }
 
-document.addEventListener('change', e => {
-  // Rating scale — add has-selection class to animate
-  if (e.target.type === 'radio' && e.target.name && e.target.name.endsWith('_rating')) {
-    const scaleBtns = e.target.closest('.scale-btns');
-    if (scaleBtns) scaleBtns.classList.add('has-selection');
-    const rb = e.target.closest('.rating-block');
-    if (rb) rb.classList.remove('error-rating');
-  }
-
-  if (e.target.type === 'radio') {
-    const row = e.target.closest('.yn-row');
-    if (row) row.classList.remove('error-row');
-  }
-  const field = e.target.closest('.field');
-  if (field && field.classList.contains('error')) field.classList.remove('error');
-  updateProgress();
-});
-document.addEventListener('input', e => {
-  const field = e.target.closest('.field');
-  if (field && field.classList.contains('error')) field.classList.remove('error');
-  updateProgress();
-});
-
 // ── Progress ──
 function updateProgress() {
   let req = 0, done = 0;
   const groups = new Set();
   document.querySelectorAll('[required]').forEach(el => {
+    if (el.offsetParent === null) return;
     if (el.type === 'radio') { groups.add(el.name); return; }
     if (el.type === 'hidden') return;
     req++;
@@ -1080,6 +1504,10 @@ function updateProgress() {
     req++;
     if (document.querySelector(`[name="${name}"]:checked`)) done++;
   });
+  // count challenge checkboxes as 1 required item
+  req++;
+  if (atLeastOneChallengeSelected()) done++;
+
   const pct = Math.min(100, Math.round((done / Math.max(req, 1)) * 100));
   document.getElementById('progressBar').style.width = pct + '%';
   document.getElementById('pct').textContent = pct + '%';
@@ -1103,6 +1531,13 @@ document.getElementById('feedbackForm').addEventListener('submit', async functio
   btn.innerHTML = '<span>Submitting…</span><span>⏳</span>';
 
   const fd = new FormData(this);
+
+  // Collect selected challenges
+  const selectedChallenges = CHALLENGE_IDS
+    .filter(id => document.getElementById(id)?.checked)
+    .map(id => document.getElementById(id).value)
+    .join(', ');
+
   const data = {
     timestamp:      new Date().toISOString(),
     studentName:    fd.get('studentName'),
@@ -1110,6 +1545,24 @@ document.getElementById('feedbackForm').addEventListener('submit', async functio
     studentEmail:   fd.get('studentEmail'),
     collegeName:    fd.get('collegeName'),
     department:     fd.get('department'),
+    // Academic & Program Effectiveness
+    ape_q1_assessments:      fd.get('ape_q1') || '',
+    ape_q2_studyMaterials:   fd.get('ape_q2') || '',
+    ape_q2_missingPapers:    fd.get('ape_q2_detail') || '',
+    ape_q3_handsOnRating:    fd.get('ape_q3_rating') || '',
+    ape_q4_confidenceRating: fd.get('ape_q4_rating') || '',
+    // Challenges
+    challenges_selected:     selectedChallenges,
+    challenges_detail:       fd.get('challengeDetail') || '',
+    challenges_suggestions:  fd.get('challengeSuggestions') || '',
+    // NPS
+    nps_score:               fd.get('nps_score') || '',
+    nps_fu1_campusSatisfied: fd.get('nps_fu1') || '',
+    nps_fu2_classroomSatisfied: fd.get('nps_fu2') || '',
+    nps_fu3_skillDev:        fd.get('nps_fu3') || '',
+    nps_fu4_placement:       fd.get('nps_fu4') || '',
+    nps_likes:               fd.get('npsLike') || '',
+    nps_improve:             fd.get('npsImprove') || '',
   };
 
   const college = fd.get('collegeName');
@@ -1134,9 +1587,18 @@ document.getElementById('feedbackForm').addEventListener('submit', async functio
     });
     showToast('Feedback submitted! Thank you 🎉');
     this.reset();
+    // reset checkboxes
+    CHALLENGE_IDS.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) { el.checked = false; el.closest('.check-item').classList.remove('checked'); }
+    });
+    document.getElementById('ape_q2_detail_wrap').classList.remove('visible');
     document.getElementById('department').disabled = true;
     document.getElementById('department').innerHTML = '<option value="" disabled selected>First select your college</option>';
     document.getElementById('facultySections').innerHTML = '';
+    document.getElementById('dynamicContent').style.display = 'none';
+    // reset scale has-selection
+    document.querySelectorAll('.scale-btns').forEach(sb => sb.classList.remove('has-selection'));
     updateProgress();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   } catch(err) {
